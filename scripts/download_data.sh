@@ -1,14 +1,20 @@
 #!/bin/bash
 set -e
 
-DATA_DIR="../data"
-URL="https://physionet.org/static/published-projects/sleep-edfx/sleep-edf-database-expanded-1.0.0.zip"
-ZIP_FILE="$DATA_DIR/sleep-edf.zip"
+# Create directories
+mkdir -p ../data/raw
+cd ../data/raw
 
-mkdir -p $DATA_DIR
-echo "Downloading Sleep-EDF dataset..."
+# Download dataset (small subset)
+URL="https://physionet.org/static/published-projects/sleep-edfx/sleep-edf-database-expanded-1.0.0.zip"
+ZIP_FILE="sleep-edf.zip"
+
+echo "Downloading Sleep-EDF Expanded subset..."
 wget -O $ZIP_FILE $URL
 
 echo "Unzipping..."
-unzip -q $ZIP_FILE -d $DATA_DIR
-echo "Done! Files stored in $DATA_DIR."
+unzip -q $ZIP_FILE
+rm $ZIP_FILE
+
+echo "Dataset ready in data/raw/"
+
