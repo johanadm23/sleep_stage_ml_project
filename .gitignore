@@ -1,0 +1,15 @@
+# data + big files
+data/
+models/
+*.pkl
+*.joblib
+
+# python
+__pycache__/
+*.pyc
+.env
+
+# Spyder project files
+.spyderproject
+.spyproject
+.ipynb_checkpoints/
