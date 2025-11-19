@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  api:
+    build: .
+    container_name: sleep_stage_api
+    ports:
+      - "8080:80"
+    volumes:
+      - ./models:/app/models:ro
+    environment:
+      MODEL_PATH: /app/models/rf_model.joblib
+      LABEL_ENCODER_PATH: /app/models/label_encoder.joblib
+      META_PATH: /app/models/meta.json
+    restart: unless-stopped
