@@ -1,0 +1,42 @@
+{
+  "n_epochs": 11595,
+  "n_subjects": 8,
+  "n_features": 27,
+  "feature_names": [
+    "mean",
+    "std",
+    "var",
+    "max",
+    "min",
+    "ptp",
+    "skewness",
+    "kurtosis",
+    "rms",
+    "zero_crossings",
+    "q25",
+    "q50",
+    "q75",
+    "iqr",
+    "mad",
+    "delta_power",
+    "delta_ratio",
+    "theta_power",
+    "theta_ratio",
+    "alpha_power",
+    "alpha_ratio",
+    "beta_power",
+    "beta_ratio",
+    "gamma_power",
+    "gamma_ratio",
+    "total_power",
+    "spectral_edge_95"
+  ],
+  "label_distribution": {
+    "W": 9918,
+    "2": 712,
+    "3": 251,
+    "R": 245,
+    "4": 236,
+    "1": 233
+  }
+}
