@@ -25,3 +25,10 @@ def train_model():
 
 if __name__ == "__main__":
     train_model()
+    # Save meta.json automatically after training
+    meta = {"features": list(X.columns),
+            "label_map": {i: cls for i, cls in enumerate(le.classes_)}
+           }
+    with open("models/meta.json", "w") as f:
+        json.dump(meta, f, indent=2)
+    print("Saved metadata to models/meta.json")
