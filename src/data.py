@@ -4,8 +4,24 @@ import pandas as pd
 import numpy as np
 from tqdm import tqdm
 
+
+def rename_files(raw_dir):
+    for file in os.listdir(raw_dir):
+        path = os.path.join(raw_dir, file)
+
+        # EEG
+        if file.endswith(".rec"):
+            new_name = file.replace(".rec", "_PSG.edf")
+            os.rename(path, os.path.join(raw_dir, new_name))
+
+        # Hypnogram
+        elif file.endswith(".hyp"):
+            new_name = file.replace(".hyp", "_HYP.edf")
+            os.rename(path, os.path.join(raw_dir, new_name))
+
 def load_subject(eeg_path, hypnogram_path, epoch_sec=30):
     """Load one subject's EEG and hypnogram data and return (signals, labels)."""
+    
     raw = mne.io.read_raw_edf(eeg_path, preload=True, verbose=False)
     annotations = mne.read_annotations(hypnogram_path)
     raw.set_annotations(annotations, emit_warning=False)
@@ -36,13 +52,19 @@ def load_subject(eeg_path, hypnogram_path, epoch_sec=30):
 
 def build_dataframe(raw_dir, limit_subjects=3):
     """Combine several subjects' data into a single DataFrame."""
+    rename_files(raw_dir)
     eeg_files = sorted([f for f in os.listdir(raw_dir) if f.endswith("PSG.edf")])[:limit_subjects]
+    # Sleep-EDF small-format (.rec/.hyp)
+    
+    #eeg_files = sorted([f for f in os.listdir(raw_dir) if f.endswith(".rec")])[:limit_subjects]
     rows = []
-
+    
     for f in tqdm(eeg_files, desc="Loading subjects"):
         subj = f.split("-")[0]
         eeg_path = os.path.join(raw_dir, f)
         hyp_path = eeg_path.replace("PSG.edf", "Hypnogram.edf")
+        #hyp_path = eeg_path.replace(".rec", ".hyp")
+
         if not os.path.exists(hyp_path):
             continue
         signals, labels = load_subject(eeg_path, hyp_path)
@@ -53,7 +75,11 @@ def build_dataframe(raw_dir, limit_subjects=3):
     return df
 
 if __name__ == "__main__":
-    raw_dir = "data/raw/sleep-cassette"
+   
+    
+    raw_dir = "data/raw/sleep-edf-database-1.0.0"
+    files = os.listdir(raw_dir)
+    print("Found files:", files)
     os.makedirs("data/processed", exist_ok=True)
     df = build_dataframe(raw_dir)
     df.to_pickle("data/processed/epochs.pkl")
