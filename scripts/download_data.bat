@@ -1,11 +1,14 @@
 @echo off
-echo Creating data directories...
-mkdir data\raw 2>nul
+echo Downloading Sleep-EDF dataset...
 
-echo Downloading dataset...
-curl -L https://physionet.org/static/published-projects/sleep-edfx/sleep-edf-database-expanded-1.0.0.zip
+set URL=https://physionet.org/static/published-projects/sleep-edfx/sleep-edf-database-expanded-1.0.0.zip
+set OUT=..\data\raw\sleep_edf.zip
+
+curl -L %URL% -o %OUT%
 
 echo Unzipping...
-powershell -Command "Expand-Archive -Path data\raw\dataset.zip -DestinationPath data\raw -Force"
+powershell -command "Expand-Archive -Path %OUT% -DestinationPath ..\data\raw -Force"
 
 echo Done!
+pause
+
